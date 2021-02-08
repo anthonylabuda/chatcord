@@ -25,6 +25,7 @@ io.on(`connection`, (socket) => {
 
   // Listent for chatMessage
   socket.on(`chatMessage`, (msg) => {
+    // Emit the message to all Users
     io.emit(`message`, msg);
   });
 });

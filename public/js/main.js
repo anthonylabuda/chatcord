@@ -1,5 +1,8 @@
-// Get the char form
+// Get the chat form DOM element
 const chatForm = document.getElementById(`chat-form`);
+
+// Get the chat messages DOM element
+const chatMessages = document.querySelector(`.chat-messages`);
 
 // Initialize the WebSocket
 const socket = io();
@@ -8,7 +11,11 @@ const socket = io();
 socket.on(`message`, (message) => {
   console.log(message);
 
+  // Output the message to the DOM
   outputMessage(message);
+
+  // Scroll to the bottom of the chat when a new message is emitted
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 // Submit the message
@@ -21,6 +28,12 @@ chatForm.addEventListener(`submit`, (event) => {
 
   // Emit the message to server
   socket.emit(`chatMessage`, msg);
+
+  // Clear chat form input
+  event.target.elements.msg.value = "";
+
+  // Focus on the chat form input
+  event.target.elements.msg.focus();
 });
 
 // Output message to DOM
