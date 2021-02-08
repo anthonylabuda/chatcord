@@ -4,7 +4,12 @@ const path = require(`path`);
 const socketio = require(`socket.io`);
 
 const formatMessage = require(`./utilities/messages`);
-const { getCurrentUser, userJoin } = require(`./utilities/users`);
+const {
+  getCurrentUser,
+  getRoomUsers,
+  userJoin,
+  userLeave,
+} = require(`./utilities/users`);
 
 const app = express();
 const server = http.createServer(app);
@@ -40,13 +45,25 @@ io.on(`connection`, (socket) => {
 
   // Listent for chatMessage
   socket.on(`chatMessage`, (msg) => {
+    // Get the current User
+    const user = getCurrentUser(socket.id);
+
     // Emit the message to all Users
-    io.emit(`message`, formatMessage(user.username, msg));
+    io.to(user.room).emit(`message`, formatMessage(user.username, msg));
   });
 
   // Runs when a User disconnects
   socket.on(`disconnect`, () => {
-    io.emit(`message`, formatMessage(CHATBOT, `A User has left the chat`));
+    // Get the current User
+    const user = userLeave(socket.id);
+
+    // Check if the User exists
+    if (user) {
+      io.to(user.room).emit(
+        `message`,
+        formatMessage(CHATBOT, `${user.username} has left the chat`)
+      );
+    }
   });
 });
 
