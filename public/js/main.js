@@ -45,7 +45,7 @@ const outputMessage = (message) => {
   div.classList.add(`message`);
 
   // Set the inner HTML of the new DOM element
-  div.innerHTML = `<p class="meta">Brad <span>9:12pm</span></p><p class="text">${message}</p>`;
+  div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span></p><p class="text">${message.text}</p>`;
 
   // Push the new DOM element to the document
   document.querySelector(`.chat-messages`).appendChild(div);
