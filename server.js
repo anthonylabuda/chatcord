@@ -41,6 +41,12 @@ io.on(`connection`, (socket) => {
         `message`,
         formatMessage(CHATBOT, `${user.username} has joined the chat`)
       );
+
+    // Send users and room info
+    io.to(user.room).emit(`roomUsers`, {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
   });
 
   // Listent for chatMessage
@@ -59,10 +65,17 @@ io.on(`connection`, (socket) => {
 
     // Check if the User exists
     if (user) {
+      // Broadcast when a User leaves
       io.to(user.room).emit(
         `message`,
         formatMessage(CHATBOT, `${user.username} has left the chat`)
       );
+
+      // Send users and room info
+      io.to(user.room).emit(`roomUsers`, {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
     }
   });
 });
