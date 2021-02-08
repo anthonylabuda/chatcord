@@ -1,5 +1,10 @@
 # chatcord
 
+|                |                                             |
+| -------------- | ------------------------------------------- |
+| **Repository** | https://github.com/bradtraversy/chatcord    |
+| **Tutorial**   | https://www.youtube.com/watch?v=jD7FnbI76Hg |
+
 ## Client
 
 ## Server
